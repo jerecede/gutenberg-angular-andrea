@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { BookService } from '../../services/book/book.service';
 import { CommonModule } from '@angular/common';
 import { BookCardComponent } from "../book-card/book-card.component";
@@ -12,6 +12,8 @@ import { Book } from '../../model/book';
 })
 export class BookListComponent {
 
+  bookSelected = output<Book>();
+
   bookServ = inject(BookService);
 
   getMoreBooks() {
@@ -20,7 +22,7 @@ export class BookListComponent {
 
   cardSelected(book: Book | undefined) {
     if(book){
-      console.log('chi ha cliccato mio figlio: ' + book.title);
+      this.bookSelected.emit(book);
     }
   }
 }

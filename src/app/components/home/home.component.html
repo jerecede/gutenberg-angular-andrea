@@ -1,4 +1,6 @@
 <div class="container">
-    <app-book-list></app-book-list>
-    <app-book-detail></app-book-detail>
+    <app-book-list
+    (bookSelected)="selectBook($event)">
+    </app-book-list>
+    <app-book-detail [book]="selectedBook"></app-book-detail>
 </div>
