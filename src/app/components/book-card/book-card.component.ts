@@ -1,5 +1,6 @@
-import { Component, inject, input, numberAttribute } from '@angular/core';
+import { Component, inject, input, numberAttribute, output } from '@angular/core';
 import { BookService } from '../../services/book/book.service';
+import { Book } from '../../model/book';
 
 @Component({
   selector: 'app-book-card',
@@ -9,11 +10,8 @@ import { BookService } from '../../services/book/book.service';
 })
 export class BookCardComponent {
 
-  bookId = input(-1, {alias: 'book-id', transform: numberAttribute});
-  imgUrl = input('', { alias: 'image-url' })
-  title = input('', { alias: 'book-title', transform: (title: string) => this.resizeTitle(title, 8) });
-
-  bookServ = inject(BookService);
+  book = input<Book>(); //input.required<Book>();
+  bookSelected = output<Book | undefined>();
 
   resizeTitle(title: string, maxWords: number): string {
     const wordsArray = title.split(' ');
@@ -26,6 +24,6 @@ export class BookCardComponent {
   }
 
   selectBook() {
-    this.bookServ.selectBookById(this.bookId());
+    this.bookSelected.emit(this.book());
   }
 }
