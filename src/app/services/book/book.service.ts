@@ -1,4 +1,4 @@
-import { effect, Injectable, signal } from '@angular/core';
+import { effect, Injectable, InputSignalWithTransform, signal } from '@angular/core';
 import { Book } from '../../model/book';
 
 @Injectable({
@@ -9,6 +9,7 @@ export class BookService {
   readonly BASE_URL = "https://gutendex.com/books/?page="
   page = signal(1)
   books = signal<Book[]>([])
+  selectedBook = signal<Book | undefined>(undefined)
 
   constructor() {
     effect(() => {
@@ -24,6 +25,13 @@ export class BookService {
     .then(data => this.books.update(previousArray => previousArray.concat(data.results)))
     .catch(err => console.log(err))
 
+  }
+
+  selectBookById(bookId: number) {
+    const selectBook = this.books().find(b => b.id === bookId);
+    if(selectBook){
+      this.selectedBook.set(selectBook);
+    }
   }
 
 }
